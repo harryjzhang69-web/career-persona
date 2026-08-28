@@ -1,0 +1,12 @@
+# 密钥 / 环境变量（勿入库）
+.env
+.env.local
+
+# EdgeOne CLI 构建缓存
+.edgeone/
+
+# 依赖 / 系统
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

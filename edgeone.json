@@ -1,0 +1,6 @@
+{
+  "name": "career-persona",
+  "cloudFunctions": {
+    "maxDuration": 120
+  }
+}

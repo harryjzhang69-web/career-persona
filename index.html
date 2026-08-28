@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 时代职场人格测试 · 你是哪种打工人</title>
+<meta name="description" content="12 道题，测出你在 AI 时代的职场人格。AI 生成专属人格报告 + 优势盲区 + 最适合你的 AI 副业方向。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+<style>
+  :root{
+    --bg:#0b0c12; --bg2:#12131c; --surface:#171826; --surface2:#1e2033;
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --ink:#f2f3f8; --ink2:#b9bcd0; --sub:#7f83a0; --faint:#5a5d78;
+    --violet:#8b7bff; --violet2:#a99bff; --cyan:#4fd9d0; --pink:#ff8fb3; --gold:#ffcf6b;
+    --grad:linear-gradient(135deg,#8b7bff 0%,#4fd9d0 100%);
+    --grad-warm:linear-gradient(135deg,#ff8fb3 0%,#ffcf6b 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:radial-gradient(1200px 700px at 50% -10%,#1b1c33 0%,var(--bg) 55%);
+    color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:600px;margin:0 auto;padding:0 20px;}
+  .backlink{display:inline-flex;gap:6px;align-items:center;color:var(--sub);text-decoration:none;font-size:13px;padding:18px 2px 0;transition:color .2s;}
+  .backlink:hover{color:var(--ink2);}
+
+  /* ---------- 封面 ---------- */
+  .hero{padding:38px 0 20px;text-align:center;}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.08em;
+    color:var(--violet2);background:rgba(139,123,255,.12);border:1px solid rgba(139,123,255,.28);
+    padding:6px 14px;border-radius:100px;margin-bottom:22px;}
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:33px;line-height:1.25;font-weight:800;margin-bottom:16px;}
+  .hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{color:var(--ink2);font-size:15px;line-height:1.7;margin-bottom:8px;}
+  .hero .meta{color:var(--faint);font-size:13px;margin-top:14px;}
+  .hero .meta b{color:var(--violet2);}
+  .start-btn{margin-top:30px;width:100%;border:none;cursor:pointer;
+    background:var(--grad);color:#0b0c12;font-weight:800;font-size:16px;
+    padding:17px;border-radius:16px;box-shadow:0 12px 30px -8px rgba(139,123,255,.5);transition:transform .15s,box-shadow .15s;}
+  .start-btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px -8px rgba(139,123,255,.6);}
+  .start-btn:active{transform:translateY(0);}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;}
+  .hero-tags span{font-size:12px;color:var(--sub);background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:100px;}
+
+  /* ---------- 答题 ---------- */
+  .quiz{display:none;padding:26px 0;}
+  .progress{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden;margin-bottom:8px;}
+  .progress-fill{height:100%;width:0;background:var(--grad);border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+  .progress-txt{font-size:12px;color:var(--sub);text-align:right;margin-bottom:26px;}
+  .q-num{font-size:13px;font-weight:700;color:var(--violet2);letter-spacing:.05em;margin-bottom:12px;}
+  .q-title{font-size:21px;font-weight:700;line-height:1.45;margin-bottom:26px;}
+  .opts{display:flex;flex-direction:column;gap:12px;}
+  .opt{text-align:left;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);
+    padding:17px 18px;border-radius:15px;font-size:15px;line-height:1.5;color:var(--ink2);
+    transition:all .16s;display:flex;gap:13px;align-items:center;}
+  .opt:hover{border-color:var(--violet);background:var(--surface2);color:var(--ink);transform:translateX(3px);}
+  .opt .k{flex-shrink:0;width:26px;height:26px;border-radius:8px;background:var(--bg2);border:1px solid var(--line2);
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--violet2);}
+  .opt:hover .k{background:var(--violet);color:#0b0c12;border-color:var(--violet);}
+  .q-back{margin-top:22px;background:none;border:none;color:var(--faint);font-size:13px;cursor:pointer;padding:6px;}
+  .q-back:hover{color:var(--ink2);}
+
+  /* ---------- Loading ---------- */
+  .loading{display:none;padding:80px 0;text-align:center;}
+  .spinner{width:52px;height:52px;margin:0 auto 26px;border-radius:50%;
+    border:3px solid var(--surface2);border-top-color:var(--violet);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading p{color:var(--ink2);font-size:15px;}
+  .loading .sub{color:var(--faint);font-size:13px;margin-top:8px;}
+
+  /* ---------- 结果卡 ---------- */
+  .result{display:none;padding:20px 0;}
+  .card{background:linear-gradient(160deg,#1c1d30 0%,#141525 100%);border:1px solid var(--line2);
+    border-radius:24px;padding:34px 26px 30px;position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;
+    background:radial-gradient(circle,rgba(139,123,255,.35),transparent 70%);filter:blur(20px);}
+  .card-eyebrow{font-size:12px;letter-spacing:.14em;color:var(--violet2);font-weight:600;margin-bottom:12px;position:relative;}
+  .persona{font-size:38px;font-weight:900;line-height:1.15;margin-bottom:12px;position:relative;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .p-tagline{font-size:16px;color:var(--ink);font-weight:600;margin-bottom:6px;position:relative;}
+  .p-code{font-size:13px;color:var(--sub);font-family:"JetBrains Mono",monospace;letter-spacing:.1em;position:relative;}
+  .match{display:flex;align-items:baseline;gap:6px;margin:20px 0;position:relative;}
+  .match .n{font-size:34px;font-weight:900;background:var(--grad-warm);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .match .l{font-size:13px;color:var(--sub);}
+  .traits{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:8px;position:relative;}
+  .traits span{font-size:13px;font-weight:600;color:var(--cyan);background:rgba(79,217,208,.1);
+    border:1px solid rgba(79,217,208,.28);padding:6px 13px;border-radius:100px;}
+
+  .sec{margin-top:24px;}
+  .sec-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;margin-bottom:14px;}
+  .sec-h .ic{width:24px;height:24px;border-radius:7px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .rowlist{display:flex;flex-direction:column;gap:11px;}
+  .row{display:flex;gap:11px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:14px 15px;font-size:14px;line-height:1.55;color:var(--ink2);}
+  .row .mk{flex-shrink:0;font-weight:800;}
+  .row.good .mk{color:var(--cyan);}
+  .row.bad .mk{color:var(--pink);}
+  .block{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px 16px;font-size:14px;line-height:1.65;color:var(--ink2);}
+  .block.hi{background:linear-gradient(135deg,rgba(139,123,255,.12),rgba(79,217,208,.08));border-color:rgba(139,123,255,.3);}
+  .block .lb{display:block;font-size:12px;font-weight:700;color:var(--violet2);letter-spacing:.06em;margin-bottom:8px;}
+  .oneliner{margin-top:24px;text-align:center;font-size:19px;font-weight:800;line-height:1.5;color:var(--gold);
+    padding:22px 18px;background:var(--surface);border:1px dashed rgba(255,207,107,.35);border-radius:16px;position:relative;}
+  .oneliner::before{content:"❝";position:absolute;top:6px;left:14px;font-size:30px;color:rgba(255,207,107,.3);}
+
+  .actions{display:flex;flex-direction:column;gap:11px;margin-top:26px;}
+  .btn{border:none;cursor:pointer;font-size:15px;font-weight:700;padding:15px;border-radius:14px;transition:transform .15s,opacity .15s;text-decoration:none;text-align:center;display:block;}
+  .btn:active{transform:scale(.98);}
+  .btn-main{background:var(--grad);color:#0b0c12;}
+  .btn-ghost{background:var(--surface2);color:var(--ink2);border:1px solid var(--line);}
+  .btn-row{display:flex;gap:11px;}
+  .btn-row .btn{flex:1;}
+
+  .crosslink{margin-top:24px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;text-align:center;}
+  .crosslink p{font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5;}
+  .crosslink a{color:var(--violet2);text-decoration:none;font-size:14px;font-weight:600;}
+  .crosslink a:hover{text-decoration:underline;}
+
+  .foot{text-align:center;color:var(--faint);font-size:12px;margin-top:34px;line-height:1.7;}
+  .foot a{color:var(--sub);text-decoration:none;}
+  .err{display:none;text-align:center;padding:40px 0;color:var(--pink);font-size:14px;}
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:#fff;color:#111;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);transition:all .3s;pointer-events:none;z-index:99;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="backlink" href="https://harryjzhang69-web.github.io/personal-site/" target="_blank" rel="noopener">← Harry 的产品橱窗</a>
+
+  <!-- 封面 -->
+  <section class="hero" id="hero">
+    <div class="badge"><span class="dot"></span>AI CAREER PERSONA · 原创人格体系</div>
+    <h1>你是 AI 时代<br>哪种<span class="g">打工人</span>？</h1>
+    <p>不是又一个烂大街的 16 型 MBTI。</p>
+    <p>12 道真实职场场景，测出你在 AI 时代的<b style="color:var(--ink)">生存人格</b>——<br>附专属优势、盲区，和最适合你的一条 AI 副业路。</p>
+    <div class="hero-tags">
+      <span>🧬 4 维度原创模型</span><span>🤖 AI 实时生成报告</span><span>📸 结果可截图晒</span>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">开始测试 · 约 90 秒</button>
+    <p class="meta">已有 <b id="fakeCount">2,847</b> 人测过自己的 AI 职场人格</p>
+  </section>
+
+  <!-- 答题 -->
+  <section class="quiz" id="quiz">
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-txt" id="progressTxt">1 / 12</div>
+    <div class="q-num" id="qNum">Q1</div>
+    <div class="q-title" id="qTitle">题目</div>
+    <div class="opts" id="opts"></div>
+    <button class="q-back" id="qBack" onclick="prevQ()" style="display:none;">← 上一题</button>
+  </section>
+
+  <!-- Loading -->
+  <section class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>AI 正在分析你的职场人格…</p>
+    <p class="sub">正在生成专属称号、优势与副业建议</p>
+  </section>
+
+  <!-- 结果 -->
+  <section class="result" id="result">
+    <div class="card" id="card">
+      <div class="card-eyebrow">你的 AI 时代职场人格</div>
+      <div class="persona" id="rPersona">—</div>
+      <div class="p-tagline" id="rTagline">—</div>
+      <div class="p-code" id="rCode">—</div>
+      <div class="match"><span class="n" id="rMatch">92%</span><span class="l">画像契合度</span></div>
+      <div class="traits" id="rTraits"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-h"><span class="ic">💪</span>你的隐藏优势</div>
+      <div class="rowlist" id="rStrengths"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="ic">⚠️</span>要小心的盲区</div>
+      <div class="rowlist" id="rBlind"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="ic">🚀</span>AI 时代如何放大自己</div>
+      <div class="block" id="rAdvice">—</div>
+    </div>
+    <div class="sec">
+      <div class="sec-h"><span class="ic">💰</span>最适合你的 AI 副业</div>
+      <div class="block hi" id="rHustle"><span class="lb">SIDE HUSTLE</span><span id="rHustleTxt">—</span></div>
+    </div>
+
+    <div class="oneliner" id="rOneliner">—</div>
+
+    <div class="actions">
+      <button class="btn btn-main" onclick="copyResult()">📋 复制我的人格文案（去小红书晒）</button>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="restart()">🔄 重新测</button>
+        <a class="btn btn-ghost" href="https://harryjzhang69-web.github.io/personal-site/" target="_blank" rel="noopener">看看更多 AI 工具</a>
+      </div>
+    </div>
+
+    <div class="crosslink" id="crosslink">
+      <p id="crossTxt">想把这份人格变成真正的求职竞争力？</p>
+      <a href="https://pm-mock-interview-exqcihvq.edgeone.dev" target="_blank" rel="noopener">去「AI PM 模拟面试官」实战练一练 →</a>
+    </div>
+
+    <p class="foot">
+      by <a href="https://harryjzhang69-web.github.io/personal-site/" target="_blank" rel="noopener">Harry · AI 产品手艺人</a><br>
+      娱乐向人格测试，非专业心理测评 · 结果由 AI 生成仅供参考
+    </p>
+  </section>
+
+  <section class="err" id="err">
+    <p id="errTxt">出了点问题，请重试</p>
+    <button class="btn btn-ghost" style="max-width:200px;margin:20px auto 0;" onclick="restart()">重新测</button>
+  </section>
+</div>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+// ===== 12 道题：每题选项带 4 维度增量 D/E/A/F =====
+// D 造物者(+)/连接者(-)  E 冒险(+)/稳健(-)  A 驾驭AI(+)/协作AI(-)  F 深潜(+)/广联(-)
+const QUESTIONS = [
+  { t:"接到一个全新项目，你的第一反应是？", o:[
+    {x:"先动手搭个能跑的原型出来再说",d:{D:8,E:7}},
+    {x:"先拉齐相关的人，把事聊清楚",d:{D:-8,F:-4}},
+    {x:"先查资料、看竞品，摸清楚再动",d:{E:-8}},
+    {x:"先问 AI：这事有没有现成的做法",d:{A:6,E:-3}},
+  ]},
+  { t:"用 AI 工具时，你更像？", o:[
+    {x:"疯狂压榨型：一个需求拆成 10 个指令喂给它",d:{A:9,D:4}},
+    {x:"共创搭档型：跟它来回聊，一起磨出结果",d:{A:-9}},
+    {x:"验证型：它给的我一定自己再核一遍",d:{A:-3,E:-6}},
+    {x:"够用就行，不太钻工具本身",d:{A:-2,F:-5}},
+  ]},
+  { t:"周末有整块空闲，你更可能？", o:[
+    {x:"做自己的小项目 / 副业",d:{D:9,F:5}},
+    {x:"约朋友、参加活动、认识新人",d:{D:-9,F:-7}},
+    {x:"深挖一个最近感兴趣的领域",d:{F:8,E:-2}},
+    {x:"到处看看新东西，什么都试一点",d:{F:-8,E:5}},
+  ]},
+  { t:"团队里你最常扮演的角色？", o:[
+    {x:"埋头产出的主力干活人",d:{D:8,F:5}},
+    {x:"串联各方、推进协作的人",d:{D:-9,F:-6}},
+    {x:"泼冷水、挑逻辑漏洞的人",d:{E:-8}},
+    {x:"点子最多、老提新玩法的人",d:{E:8,F:-3}},
+  ]},
+  { t:"面对一个没人做过的事，你？", o:[
+    {x:"兴奋，先冲了再说",d:{E:9,D:4}},
+    {x:"谨慎，先评估风险和退路",d:{E:-9}},
+    {x:"找 AI 和资料，看看别人怎么破的",d:{A:5,E:-4}},
+    {x:"拉几个人一起商量着来",d:{D:-7}},
+  ]},
+  { t:"你理想的工作状态是？", o:[
+    {x:"一个人深度专注，别来烦我",d:{F:9,D:5}},
+    {x:"多线并行，跨好几个事之间切换",d:{F:-9,E:4}},
+    {x:"节奏稳定、目标清晰、可预期",d:{E:-8}},
+    {x:"不断有新挑战、新变化",d:{E:8,F:-4}},
+  ]},
+  { t:"学一个新技能，你倾向？", o:[
+    {x:"边做边学，做中出成品",d:{D:8,E:5}},
+    {x:"系统学透原理再上手",d:{F:7,E:-5}},
+    {x:"让 AI 给我定制路径、当私教",d:{A:7}},
+    {x:"找人带 / 抄作业最快",d:{D:-6,F:-4}},
+  ]},
+  { t:"你怎么看待「效率」？", o:[
+    {x:"能自动化的绝不手动，工具越多越好",d:{A:8,D:4}},
+    {x:"效率是结果对，不是做得快",d:{E:-7}},
+    {x:"深耕一件事的复利，比广撒网高效",d:{F:8}},
+    {x:"人对了、协作顺了，效率自然高",d:{D:-8,F:-5}},
+  ]},
+  { t:"做决定时你更信？", o:[
+    {x:"数据和事实",d:{E:-9}},
+    {x:"直觉和手感",d:{E:9}},
+    {x:"AI 帮我分析出的建议",d:{A:6,E:-3}},
+    {x:"信得过的人的意见",d:{D:-8}},
+  ]},
+  { t:"如果做个人 IP / 内容，你会？", o:[
+    {x:"晒我做出来的东西（作品/产品）",d:{D:9,F:4}},
+    {x:"连接同好、做社群和圈子",d:{D:-9,F:-6}},
+    {x:"深度输出某个垂直领域的干货",d:{F:9}},
+    {x:"追热点、什么火聊什么",d:{F:-8,E:6}},
+  ]},
+  { t:"最让你有成就感的瞬间？", o:[
+    {x:"东西终于跑通 / 上线了",d:{D:9,E:3}},
+    {x:"促成了一次合作 / 帮到了人",d:{D:-9}},
+    {x:"把一个复杂问题彻底想透了",d:{F:8,E:-4}},
+    {x:"抢先玩到 / 试到了新东西",d:{E:7,F:-4}},
+  ]},
+  { t:"对「AI 会不会取代你」这件事，你？", o:[
+    {x:"不慌，我是那个用 AI 取代重复劳动的人",d:{A:8,D:5}},
+    {x:"跟 AI 分工，各干各擅长的",d:{A:-8}},
+    {x:"先看清它的边界，再决定怎么应对",d:{E:-7}},
+    {x:"焦虑归焦虑，先多认识人多留后路",d:{D:-7,E:-3}},
+  ]},
+];
+
+let cur=0;
+const answers=new Array(QUESTIONS.length).fill(null);
+const scores={D:0,E:0,A:0,F:0};
+
+const $=(id)=>document.getElementById(id);
+
+function startQuiz(){
+  $('hero').style.display='none';
+  $('quiz').style.display='block';
+  cur=0; renderQ();
+  window.scrollTo(0,0);
+}
+function renderQ(){
+  const q=QUESTIONS[cur];
+  $('progressFill').style.width=((cur)/QUESTIONS.length*100)+'%';
+  $('progressTxt').textContent=(cur+1)+' / '+QUESTIONS.length;
+  $('qNum').textContent='Q'+(cur+1);
+  $('qTitle').textContent=q.t;
+  const wrap=$('opts'); wrap.innerHTML='';
+  const keys=['A','B','C','D'];
+  q.o.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML='<span class="k">'+keys[i]+'</span><span>'+opt.x+'</span>';
+    b.onclick=()=>choose(i);
+    wrap.appendChild(b);
+  });
+  $('qBack').style.display=cur>0?'inline-block':'none';
+}
+function choose(i){
+  answers[cur]=i;
+  if(cur<QUESTIONS.length-1){ cur++; renderQ(); window.scrollTo(0,0); }
+  else{ finish(); }
+}
+function prevQ(){ if(cur>0){ cur--; renderQ(); window.scrollTo(0,0);} }
+
+function computeScores(){
+  scores.D=0;scores.E=0;scores.A=0;scores.F=0;
+  answers.forEach((ai,qi)=>{
+    if(ai===null) return;
+    const d=QUESTIONS[qi].o[ai].d;
+    for(const k in d){ scores[k]+=d[k]; }
+  });
+  // clamp -100~100
+  for(const k in scores){ scores[k]=Math.max(-100,Math.min(100,scores[k])); }
+}
+function tendencyText(){
+  const map=[
+    scores.D>=0?'偏造物者(亲手做)':'偏连接者(连接人)',
+    scores.E>=0?'偏冒险直觉':'偏数据稳健',
+    scores.A>=0?'偏驾驭AI(压榨工具)':'偏与AI协作',
+    scores.F>=0?'偏深潜专精':'偏广联跨界',
+  ];
+  return map.join('，');
+}
+
+async function finish(){
+  $('progressFill').style.width='100%';
+  $('quiz').style.display='none';
+  $('loading').style.display='block';
+  window.scrollTo(0,0);
+  computeScores();
+  try{
+    const resp=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({scores,tendency:tendencyText()})
+    });
+    const j=await resp.json();
+    if(j.code!==0) throw new Error(j.message||'生成失败');
+    renderResult(j.data);
+  }catch(e){
+    $('loading').style.display='none';
+    $('err').style.display='block';
+    $('errTxt').textContent=(e&&e.message)||'网络开小差了，请重试';
+  }
+}
+
+let lastPersona=null;
+function renderResult(p){
+  lastPersona=p;
+  $('loading').style.display='none';
+  $('result').style.display='block';
+  $('rPersona').textContent=p.persona_name||'AI 时代职场人';
+  $('rTagline').textContent=p.tagline||'';
+  $('rCode').textContent=p.type_code?('CODE · '+p.type_code):'';
+  $('rMatch').textContent=(p.match_rate||92)+'%';
+  const tr=$('rTraits'); tr.innerHTML='';
+  (p.traits||[]).forEach(t=>{const s=document.createElement('span');s.textContent='#'+t;tr.appendChild(s);});
+  renderRows('rStrengths',p.strengths,'good','✓');
+  renderRows('rBlind',p.blindspots,'bad','!');
+  $('rAdvice').textContent=p.ai_advice||'';
+  $('rHustleTxt').textContent=p.suit_side_hustle||'';
+  $('rOneliner').textContent=p.one_liner||'';
+  window.scrollTo(0,0);
+}
+function renderRows(id,arr,cls,mk){
+  const wrap=$(id); wrap.innerHTML='';
+  (arr||[]).forEach(t=>{
+    const d=document.createElement('div');
+    d.className='row '+cls;
+    d.innerHTML='<span class="mk">'+mk+'</span><span>'+t+'</span>';
+    wrap.appendChild(d);
+  });
+}
+
+function copyResult(){
+  if(!lastPersona) return;
+  const p=lastPersona;
+  const txt=
+`我的 AI 时代职场人格是：${p.persona_name}（${p.type_code}）
+「${p.tagline}」
+契合度 ${p.match_rate}%
+
+我的标签：${(p.traits||[]).map(t=>'#'+t).join(' ')}
+
+最适合我的 AI 副业：${p.suit_side_hustle}
+
+${p.one_liner}
+
+—— 测你的 AI 职场人格 by Harry · AI 产品手艺人`;
+  navigator.clipboard.writeText(txt).then(showToast).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');showToast();}catch(e){}document.body.removeChild(ta);
+  });
+}
+function showToast(){const t=$('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+function restart(){
+  answers.fill(null);
+  $('result').style.display='none';
+  $('err').style.display='none';
+  $('hero').style.display='block';
+  window.scrollTo(0,0);
+}
+
+// 轻量动态计数，营造真实感（本地随机，非真实统计）
+(function(){
+  const base=2847+Math.floor((Date.now()/8.64e7)%1*30);
+  $('fakeCount').textContent=base.toLocaleString();
+})();
+</script>
+</body>
+</html>
