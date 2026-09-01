@@ -4,9 +4,9 @@
 
 const TEXT_ENDPOINT = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
 const DEFAULT_MODEL = 'glm-4.7-flash';
-// 兜底默认 Key：EdgeOne 控制台未配置环境变量时也能直接用真实模型（而非演示模式）。
-// 更安全的做法：在控制台「环境变量」里配置 ZHIPU_API_KEY 覆盖同名变量。
-const DEFAULT_ZHIPU_KEY = 'c663637ee1e04f53888de5818b0d3283.gDm5WG1iuCyMCEgv';
+// 不再提供真实模型的源码兜底 Key。
+// 未配置环境变量时自动进入演示模式，避免公开仓库泄露密钥。
+const DEFAULT_ZHIPU_KEY = '';
 
 function getConfig(env) {
   const key = (env && (env.ZHIPU_API_KEY || env.LLM_API_KEY)) || DEFAULT_ZHIPU_KEY;
